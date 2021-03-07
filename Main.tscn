@@ -5,13 +5,13 @@
 [ext_resource path="res://Main.gd" type="Script" id=3]
 [ext_resource path="res://Paddle.tscn" type="PackedScene" id=4]
 
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 5, 360 )
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 5, 360 )
 
-[sub_resource type="RectangleShape2D" id=6]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 240, 5 )
 
 [node name="Main" type="Node"]
@@ -19,7 +19,8 @@ script = ExtResource( 3 )
 Brick = ExtResource( 2 )
 
 [node name="Ball" parent="." instance=ExtResource( 1 )]
-position = Vector2( 228.558, 499.997 )
+position = Vector2( 240, 620 )
+speed = 200.0
 
 [node name="Walls" type="Node" parent="."]
 
@@ -30,7 +31,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/left"]
-shape = SubResource( 4 )
+shape = SubResource( 1 )
 
 [node name="right" type="StaticBody2D" parent="Walls"]
 position = Vector2( 485, 360 )
@@ -39,7 +40,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/right"]
-shape = SubResource( 5 )
+shape = SubResource( 2 )
 
 [node name="top" type="StaticBody2D" parent="Walls"]
 position = Vector2( 240, -5 )
@@ -48,7 +49,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/top"]
-shape = SubResource( 6 )
+shape = SubResource( 3 )
 
 [node name="Paddle" parent="." instance=ExtResource( 4 )]
 position = Vector2( 240, 680 )

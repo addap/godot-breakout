@@ -10,12 +10,16 @@ var brick_height = 30
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	randomize()
+	
 	for y in range(1, 6):
 		for x in range(1, 6):
 			var brick = Brick.instance()
 			add_child(brick)
 			brick.position.y = y * (brick_height + padding) - brick_height / 2 
 			brick.position.x = x * (brick_width + padding) - brick_width / 2
+
+	# $Ball.position. = $Paddle/Position2D.position
 
 
 func _on_game_over():

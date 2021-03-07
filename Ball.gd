@@ -1,13 +1,11 @@
 extends KinematicBody2D
 
-export (float, 1.0, 5.0, 0.2) var speed = 3.0
+export (float, 200.0, 400.0, 5) var speed = 200.0
 export var direction = Vector2(0, -1)
 
 signal game_over
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+var start = false
 
 
 # func _physics_process(delta):
@@ -29,58 +27,51 @@ func _ready():
 # 		assert(direction.is_normalized(), "should be normal")
 
 # 		collision = move_and_collide(direction * restspeed)
+#       ...
 
-# 		if collision != null:
-# 			if n == 2:
-# 				print("two hits!")
+func jitter(v: Vector2, r: float = PI/8) -> Vector2:
+	return v.rotated(rand_range(-r, r))
 
-# 			print("hit!")
-# 			# kollision stoppt die bewegung. In remainder ist die noch verbleibende Distanz
-# 			print(collision.remainder)
-
-# 			# https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector			
-# 			var normal = collision.normal.normalized()
-# 			var reflected_direction = direction - 2 * direction.dot(normal) * normal
-
-# 			direction = reflected_direction
-# 			restspeed = collision.remainder.length()
-
-# func _draw():
-# 	if p1 && p2:
-# 		draw_line(p1, p2, Color(1, 0, 0))
+func _process(_delta):
+	if !start && Input.is_action_pressed("ui_start"):
+		start = true
+		direction = jitter(direction, PI/4)
 
 func _physics_process(delta):
+	if !start:
+		return
+
 	var start_position = position
-	var collision = move_and_collide(direction * speed)
+	var collision = move_and_collide(direction * speed * delta)
 	var end_position = position
 
-	var first_len = (end_position - start_position).length()
+	var _first_len = (end_position - start_position).length()
 
 	if collision != null:
 		print("hit!")
 		print(collision.remainder)
 		
-		# kill the brick
-		collision.collider.queue_free()
-
+		
 		# https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
 		var normal = collision.normal.normalized()
 		var reflected_direction = direction - 2 * direction.dot(normal) * normal
-		reflected_direction = reflected_direction.rotated(rand_range(-PI/8, PI/8))
 
-		# emit_signal("hit", collision.position, collision.position + 100 * normal)
+		# kill the brick
+		if collision.collider.is_in_group('bricks'):
+			collision.collider.damage()
+			reflected_direction = jitter(reflected_direction)
 
-		direction = reflected_direction
+		direction = reflected_direction.normalized()
 
 		# man koennte auch einfacher hier eine zweite Bewegung starten, jeder weitere Rest wird dann verworfen.
-		var rem_length = collision.remainder.length()
-		if (rem_length > 0):
-			move_and_collide(direction * rem_length)
+		# var rem_length = collision.remainder.length()
+		# if (rem_length > 0):
+		# 	move_and_collide(direction * rem_length)
 			
 
 		
 	var real_end = position
-	var second_len = (real_end - end_position).length()
+	var _second_len = (real_end - end_position).length()
 	# print(first_len + second_len)
 	
 
