@@ -1,7 +1,8 @@
 extends KinematicBody2D
 
-export (float, 200.0, 400.0, 5) var speed = 200.0
+export (float, 300.0, 500.0, 5) var speed = 200.0
 export var direction = Vector2(0, -1)
+export var impact = 5
 
 signal game_over
 
@@ -42,19 +43,27 @@ func _physics_process(delta):
 		return
 
 	var start_position = position
-	var collision = move_and_collide(direction * speed * delta)
+	var collision : KinematicCollision2D = move_and_collide(direction * speed * delta)
 	var end_position = position
 
 	var _first_len = (end_position - start_position).length()
 
 	if collision != null:
 		print("hit!")
-		print(collision.remainder)
-		
-		
-		# https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
+		# print(collision.remainder)
 		var normal = collision.normal.normalized()
-		var reflected_direction = direction - 2 * direction.dot(normal) * normal
+		
+		# project velocity on normal to check how much velocity should impact ball
+		# var impact_direction = collision.collider_velocity.dot(normal)
+		# print(impact_direction)		
+
+		# https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
+		
+		# direction - 2 * direction.dot(normal) * normal
+		var reflected_direction = direction.bounce(normal)
+
+		# if collision.collider_velocity.x != 0:
+		# 	reflected_direction = (reflected_direction + impact * normal) / 2
 
 		# kill the brick
 		if collision.collider.is_in_group('bricks'):

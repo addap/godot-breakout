@@ -20,7 +20,7 @@ Brick = ExtResource( 2 )
 
 [node name="Ball" parent="." instance=ExtResource( 1 )]
 position = Vector2( 240, 620 )
-speed = 200.0
+speed = 350.0
 
 [node name="Walls" type="Node" parent="."]
 
