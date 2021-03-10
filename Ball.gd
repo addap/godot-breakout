@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-export (float, 300.0, 500.0, 5) var speed = 200.0
+export (float, 300.0, 500.0, 5) var speed = 300.0
 var extra_speed = 0
 export var direction = Vector2(0, -1)
 export var impact = 5
@@ -10,6 +10,7 @@ const Brick = preload('res://Brick.gd')
 const Paddle = preload('res://Paddle.gd')
 
 signal game_over
+signal start_game
 
 var start = false
 
@@ -20,9 +21,6 @@ func _process(_delta):
 	if !start && Input.is_action_pressed("ui_start"):
 		start = true
 		direction = jitter(direction, PI/4)
-
-func reenable_mask():
-	collision_mask = 0b11
 
 func _physics_process(delta):
 	if !start:
