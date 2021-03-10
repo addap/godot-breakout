@@ -10,22 +10,31 @@ const Brick = preload('res://Brick.gd')
 const Paddle = preload('res://Paddle.gd')
 
 signal game_over
-signal start_game
 
 var start = false
+
+func _ready():
+	set_physics_process(false)
 
 func jitter(v: Vector2, r: float = PI/8) -> Vector2:
 	return v.rotated(rand_range(-r, r))
 
 func _process(_delta):
-	if !start && Input.is_action_pressed("ui_start"):
-		start = true
+	if !is_physics_processing() && Input.is_action_pressed("ui_start"):
+		set_physics_process(true)
 		direction = jitter(direction, PI/4)
 
-func _physics_process(delta):
-	if !start:
-		return
+		var pos = global_position
+		var main = get_parent().get_parent()
+		get_parent().remove_child(self)
+		main.add_child(self)
+		global_position = pos
 
+		var vn = VisibilityNotifier2D.new()
+		vn.connect("screen_exited", self, "_on_screen_exited")
+		add_child(vn)
+
+func _physics_process(delta):
 	var collision : KinematicCollision2D = move_and_collide(direction * (speed + extra_speed) * delta)
 
 	if extra_speed > 0:

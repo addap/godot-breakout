@@ -41,10 +41,11 @@ func new_game():
 	if ball:
 		ball.queue_free()
 	ball = Ball.instance()
-	add_child(ball)
+	paddle.add_child(ball)
 	ball.connect("game_over", self, "_on_game_over")
-	ball.position = $BallPosition.position
-
+	ball.position = paddle.get_node("BallPosition").position
+	
+	
 
 func _on_game_over():
 	lives -= 1
