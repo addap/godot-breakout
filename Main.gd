@@ -1,12 +1,11 @@
 extends Node
 
-export (PackedScene) var Brick
-export (PackedScene) var Ball
-export (PackedScene) var Paddle
+const Brick = preload("res://Brick.tscn")
+const Ball = preload("res://Ball.tscn")
+const Paddle = preload("res://Paddle.tscn")
 
-# const BallT = preload("res://Ball.gd")
-# var ball: BallT
-var ball
+const BallT = preload("res://Ball.gd")
+var ball: BallT
 
 const PaddleT = preload("res://Paddle.gd")
 var paddle: PaddleT
