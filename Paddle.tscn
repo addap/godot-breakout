@@ -5,7 +5,7 @@
 [ext_resource path="res://Breakout Tile Set Free/PNG/51-Breakout-Tiles.png" type="Texture" id=3]
 [ext_resource path="res://Breakout Tile Set Free/PNG/52-Breakout-Tiles.png" type="Texture" id=4]
 
-[sub_resource type="SpriteFrames" id=2]
+[sub_resource type="SpriteFrames" id=1]
 animations = [ {
 "frames": [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ) ],
 "loop": true,
@@ -13,11 +13,12 @@ animations = [ {
 "speed": 10.0
 } ]
 
-[sub_resource type="CapsuleShape2D" id=1]
+[sub_resource type="CapsuleShape2D" id=2]
 radius = 13.1261
 height = 71.2529
 
 [node name="Paddle" type="KinematicBody2D"]
+collision_mask = 0
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true
@@ -30,12 +31,12 @@ texture = ExtResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 scale = Vector2( 0.2, 0.2 )
-frames = SubResource( 2 )
+frames = SubResource( 1 )
 frame = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( 0, -60 )
